@@ -49,6 +49,12 @@ function App() {
         setGenero("");
     }
 
+    function excluirFilme(id: number) {
+        const filmesAtualizados = filmes.filter((item) => item.id != id);
+
+        setFilmes(filmesAtualizados);
+    }
+
     return (
         <div>
             <h1>Locadora da Bruna</h1>
@@ -58,6 +64,7 @@ function App() {
                     <th>Nome:</th>
                     <th>Gênero:</th>
                     <th>Id:</th>
+                    <th>Excluir</th>
                 </tr>
                 {filmes.map((item) => {
                     return (
@@ -65,6 +72,9 @@ function App() {
                             <td>{item.nome} </td>
                             <td>{item.genero}</td>
                             <td>{item.id}</td>
+                            <td>
+                                <button onClick={() => excluirFilme(item.id)}>Excluir</button>
+                            </td>
                         </tr>
                     );
                 })}
@@ -81,6 +91,7 @@ function App() {
                     <label>Gênero:</label>
                     <input type="text" name="genero" value={genero} onChange={(e) => setGenero(e.target.value)} />
                 </div>
+
                 <button>Adicionar</button>
             </form>
         </div>
