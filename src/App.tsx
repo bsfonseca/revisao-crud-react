@@ -28,11 +28,18 @@ function App() {
 
     const [genero, setGenero] = useState("");
 
+    const [id, setId] = useState(-1);
+
     function adicionarFilme(event: any) {
         event.preventDefault();
 
         if (!nome || !genero) {
             alert("Preencha todos os campos");
+            return;
+        }
+
+        if (id >= 0) {
+            salvarFilme(id, nome, genero);
             return;
         }
 
@@ -47,12 +54,42 @@ function App() {
 
         setNome("");
         setGenero("");
+        setId(id);
     }
 
     function excluirFilme(id: number) {
         const filmesAtualizados = filmes.filter((item) => item.id != id);
 
         setFilmes(filmesAtualizados);
+    }
+
+    function atualizarFilme(id: number) {
+        const filme = filmes.find((item) => item.id == id);
+
+        if (!filme) {
+            alert("Filme inválido");
+            return;
+        }
+        setNome(filme.nome);
+        setGenero(filme.genero);
+        setId(id);
+    }
+
+    function salvarFilme(id: number, nome: string, genero: string) {
+        const indice = filmes.findIndex((item) => item.id == id);
+
+        if (indice < 0) {
+            alert("Filme não encontrado");
+            return;
+        }
+        filmes[indice].nome = nome;
+        filmes[indice].genero = genero;
+
+        setFilmes(filmes);
+
+        setNome("");
+        setGenero("");
+        setId(-1);
     }
 
     return (
@@ -65,6 +102,7 @@ function App() {
                     <th>Gênero:</th>
                     <th>Id:</th>
                     <th>Excluir</th>
+                    <th>Atualizar</th>
                 </tr>
                 {filmes.map((item) => {
                     return (
@@ -74,6 +112,9 @@ function App() {
                             <td>{item.id}</td>
                             <td>
                                 <button onClick={() => excluirFilme(item.id)}>Excluir</button>
+                            </td>
+                            <td>
+                                <button onClick={() => atualizarFilme(item.id)}>Atualizar</button>
                             </td>
                         </tr>
                     );
