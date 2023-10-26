@@ -24,6 +24,31 @@ function App() {
         },
     ]);
 
+    const [nome, setNome] = useState("");
+
+    const [genero, setGenero] = useState("");
+
+    function adicionarFilme(event: any) {
+        event.preventDefault();
+
+        if (!nome || !genero) {
+            alert("Preencha todos os campos");
+            return;
+        }
+
+        const novoFilme = {
+            id: filmes.length + 1,
+            nome,
+            genero,
+            urlImagem: "",
+        };
+
+        setFilmes([...filmes, novoFilme]);
+
+        setNome("");
+        setGenero("");
+    }
+
     return (
         <div>
             <h1>Locadora da Bruna</h1>
@@ -44,6 +69,20 @@ function App() {
                     );
                 })}
             </table>
+            <hr />
+
+            <form onSubmit={adicionarFilme}>
+                <h3>Adicione um novo filme</h3>
+                <div>
+                    <label>Nome:</label>
+                    <input type="text" name="nome" value={nome} onChange={(e) => setNome(e.target.value)} />
+                </div>
+                <div>
+                    <label>Gênero:</label>
+                    <input type="text" name="genero" value={genero} onChange={(e) => setGenero(e.target.value)} />
+                </div>
+                <button>Adicionar</button>
+            </form>
         </div>
     );
 }
